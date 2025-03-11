@@ -21,7 +21,7 @@ NAudioExtend is an open-source C# library that builds upon [NAudio](https://gith
 ### Installation
   
 1. Clone the repository:  
-```bash
+```C#
        git clone https://github.com/yourusername/NAudioExtend.git
 ```
 2. Open the solution in Visual Studio and build the project.  
@@ -30,7 +30,7 @@ NAudioExtend is an open-source C# library that builds upon [NAudio](https://gith
 ### Usage Example
   
 Below is a brief example of how to use the library to manage audio devices:  
-```bash
+```C#
     // Include the necessary namespace.
     using NAudioExtend.AudioDevice;
     
@@ -50,7 +50,7 @@ Below is a brief example of how to use the library to manage audio devices:
     }
 ```
 And an example of using the stream switch provider:  
-```bash
+```C#
     using NAudioExtend.Provider;
     using NAudio.Wave;
     
@@ -68,7 +68,8 @@ And an example of using the stream switch provider:
     IExtendProvider newProvider = new YourOtherProviderImplementation();
     streamSwitch.ChangeProvider(newProvider);
 ```
-Seamless Source Switching Example:  
+  
+### StreamSwitchProvider Example:  
   
 StreamSwitchProvider is designed to enable seamless switching of the audio source by passing it to WasapiOut’s Init method. Once WasapiOut is initialized with a StreamSwitchProvider instance, the provider can internally switch the data source without the need to reinitialize WasapiOut.  
 By calling ChangeProvider on the StreamSwitchProvider, the audio data sent to WasapiOut is seamlessly updated to reflect the new source, minimizing interruptions and audible artifacts.  
