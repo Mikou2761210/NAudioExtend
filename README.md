@@ -49,25 +49,6 @@ Below is a brief example of how to use the library to manage audio devices:
         Console.WriteLine("Default Device: " + defaultDevice.FriendlyName);
     }
 ```
-And an example of using the stream switch provider:  
-```C#
-    using NAudioExtend.Provider;
-    using NAudio.Wave;
-    
-    // Assume you have an initial IExtendProvider (e.g., an audio file reader)
-    IExtendProvider initialProvider = new YourExtendProviderImplementation();
-    
-    // Create a StreamSwitchProvider with the initial provider.
-    using var streamSwitch = new StreamSwitchProvider(initialProvider);
-    
-    // Read from the provider.
-    byte[] buffer = new byte[4096];
-    int bytesRead = streamSwitch.Read(buffer, 0, buffer.Length);
-    
-    // Change provider when needed.
-    IExtendProvider newProvider = new YourOtherProviderImplementation();
-    streamSwitch.ChangeProvider(newProvider);
-```
   
 ### StreamSwitchProvider Example:  
   
@@ -80,6 +61,7 @@ Example usage:
     IExtendProvider initialProvider = new YourInitialProvider();
 
     // Instantiate the StreamSwitchProvider with the initial provider
+    // The provider passed to `StreamSwitchProvider()` must implement `IExtendProvider` to ensure seamless source switching and compatibility.  
     var streamSwitchProvider = new StreamSwitchProvider(initialProvider);
 
     // Create a WasapiOut instance with the desired configuration parameters
