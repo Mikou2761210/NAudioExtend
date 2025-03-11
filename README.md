@@ -68,7 +68,40 @@ And an example of using the stream switch provider:
     IExtendProvider newProvider = new YourOtherProviderImplementation();
     streamSwitch.ChangeProvider(newProvider);
 ```
+Seamless Source Switching Example:  
+  
+StreamSwitchProvider is designed to enable seamless switching of the audio source by passing it to WasapiOut’s Init method. Once WasapiOut is initialized with a StreamSwitchProvider instance, the provider can internally switch the data source without the need to reinitialize WasapiOut.  
+By calling ChangeProvider on the StreamSwitchProvider, the audio data sent to WasapiOut is seamlessly updated to reflect the new source, minimizing interruptions and audible artifacts.  
+  
+Example usage:  
+```C#
+    // Create an initial IExtendProvider (for example, an audio file reader)
+    IExtendProvider initialProvider = new YourInitialProvider();
 
+    // Instantiate the StreamSwitchProvider with the initial provider
+    var streamSwitchProvider = new StreamSwitchProvider(initialProvider);
+
+    // Create a WasapiOut instance with the desired configuration parameters
+    var wasapiOut = new WasapiOut(currentDevice, shareMode, useEventSync, latency);
+
+    // Initialize WasapiOut with the StreamSwitchProvider. This enables internal source switching.
+    wasapiOut.Init(streamSwitchProvider);
+
+    // Start playback
+    wasapiOut.Play();
+
+    // When it’s time to switch the source, create a new IExtendProvider
+    IExtendProvider newProvider = new YourNewProvider();
+
+    // Change the provider inside the StreamSwitchProvider
+    streamSwitchProvider.ChangeProvider(newProvider);
+
+    // The audio data flowing to WasapiOut will now be seamlessly sourced from the new provider,
+    // without reinitializing WasapiOut or causing playback interruptions.
+```
+This approach leverages the Init method of WasapiOut to handle dynamic source changes internally within StreamSwitchProvider, ensuring smooth and seamless transitions between different audio sources.  
+  
+  
 ## License  
   
 This project is licensed under the MIT License - see the LICENSE file for details.  
