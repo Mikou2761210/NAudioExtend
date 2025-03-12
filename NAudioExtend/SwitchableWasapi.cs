@@ -21,15 +21,66 @@ namespace NAudioExtend
         private WasapiOut? _wasapiOut = null;
         private IWaveProvider? _currentProvider = null;
         private MMDevice? _currentDevice = null;
+
         /// <summary>
-        /// Gets the current audio device.
+        /// Gets or sets the current audio device.
         /// </summary>
-        public MMDevice? CurrentDevice => _currentDevice;
+        public MMDevice? CurrentDevice
+        {
+            get => _currentDevice;
+            set
+            {
+                lock (_lock)
+                {
+                    _currentDevice = value;
+                    ResetWasapi();
+                }
+            }
+        }
 
         // Configuration parameters.
         private AudioClientShareMode _shareMode;
         private bool _useEventSync;
         private int _latency;
+
+        public AudioClientShareMode ShareMode
+        {
+            get => _shareMode;
+            set
+            {
+                lock (_lock)
+                {
+                    _shareMode = value;
+                    ResetWasapi();
+                }
+            }
+        }
+
+        public bool UseEventSync
+        {
+            get => _useEventSync;
+            set
+            {
+                lock (_lock)
+                {
+                    _useEventSync = value;
+                    ResetWasapi();
+                }
+            }
+        }
+
+        public int Latency
+        {
+            get => _latency;
+            set
+            {
+                lock (_lock)
+                {
+                    _latency = value;
+                    ResetWasapi();
+                }
+            }
+        }
 
         /// <summary>
         /// Event raised when playback stops.
@@ -69,8 +120,7 @@ namespace NAudioExtend
         {
             PlaybackState? oldState = _wasapiOut?.PlaybackState;
             _wasapiOut?.Dispose();
-
-            if (_currentProvider != null && _currentDevice != null && _currentDevice.State == DeviceState.Active)
+            if (_currentProvider != null && _currentDevice?.State == DeviceState.Active)
             {
                 try
                 {
@@ -241,6 +291,7 @@ namespace NAudioExtend
                 _wasapiOut?.Dispose();
                 _wasapiOut = null;
                 _currentDevice = null;
+                _currentProvider = null;
             }
         }
     }

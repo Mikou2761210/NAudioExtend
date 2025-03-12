@@ -1,5 +1,6 @@
 ﻿using NAudio;
 using NAudio.Wave;
+using System.Diagnostics;
 namespace NAudioExtend.Provider
 {
     /// <summary>
@@ -47,9 +48,14 @@ namespace NAudioExtend.Provider
         }
 
         /// <summary>
+        /// Specifies the WaveFormat to use when the CurrentProvider is null. This ensures that StreamSwitchProvider has a defined format before a provider is set.
+        /// </summary>
+        public WaveFormat DefaultWaveFormat;
+
+        /// <summary>
         /// Gets the WaveFormat from the current provider.
         /// </summary>
-        public WaveFormat? WaveFormat => _currentProvider?.WaveFormat;
+        public WaveFormat WaveFormat => _currentProvider?.WaveFormat ?? DefaultWaveFormat;
 
         /// <summary>
         /// Event raised when playback ends.
@@ -61,8 +67,11 @@ namespace NAudioExtend.Provider
         /// <summary>
         /// Initializes a new instance of StreamSwitchProvider with an optional initial provider.
         /// </summary>
-        public StreamSwitchProvider(IExtendProvider? initialProvider)
+        /// <param name="initialProvider">The initial provider to use.</param>
+        /// <param name="defaultWaveFormat">Specifies the WaveFormat to use when the CurrentProvider is null. This ensures that StreamSwitchProvider has a defined format before a provider is set.</param>
+        public StreamSwitchProvider(IExtendProvider? initialProvider, WaveFormat defaultWaveFormat)
         {
+            DefaultWaveFormat = defaultWaveFormat;
             ChangeProvider(initialProvider);
         }
 
