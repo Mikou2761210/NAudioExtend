@@ -57,6 +57,8 @@ Below is a brief example of how to use the library to manage audio devices:
 StreamSwitchProvider is designed to enable seamless switching of the audio source by passing it to WasapiOut’s Init method. Once WasapiOut is initialized with a StreamSwitchProvider instance, the provider can internally switch the data source without the need to reinitialize WasapiOut.  
 By calling ChangeProvider on the StreamSwitchProvider, the audio data sent to WasapiOut is seamlessly updated to reflect the new source, minimizing interruptions and audible artifacts.  
   
+**Note:** If the new provider’s WaveFormat differs from the original, WasapiOut must be reinitialized (or recreated) to update its OutputWaveFormat correctly.  
+  
 Example usage:  
 ```C#
     // Create an initial IExtendProvider (for example, an audio file reader)
