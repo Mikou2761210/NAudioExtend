@@ -27,7 +27,9 @@ NAudioExtend is an open-source C# library that builds upon [NAudio](https://gith
 2. Open the solution in Visual Studio and build the project.  
 3. Add a reference to the built library in your project.  
   
-### Usage Example
+## Usage Example  
+
+### AudioDeviceManager Example
   
 Below is a brief example of how to use the library to manage audio devices:  
 ```C#
