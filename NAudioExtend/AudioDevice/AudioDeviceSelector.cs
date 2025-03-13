@@ -1,19 +1,4 @@
 ﻿using NAudio.CoreAudioApi;
-using NAudio.MediaFoundation;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NAudioExtend.AudioDevice
 {

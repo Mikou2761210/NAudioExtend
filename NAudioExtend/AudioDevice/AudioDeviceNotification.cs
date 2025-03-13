@@ -1,10 +1,5 @@
-﻿using NAudio.CoreAudioApi.Interfaces;
-using NAudio.CoreAudioApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NAudio.CoreAudioApi;
+using NAudio.CoreAudioApi.Interfaces;
 
 namespace NAudioExtend.AudioDevice
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NAudioExtend.Provider
+﻿namespace NAudioExtend.Provider
 {
     public class AudioFileReader(string fileName) : NAudio.Wave.AudioFileReader(fileName), IExtendProvider
     {

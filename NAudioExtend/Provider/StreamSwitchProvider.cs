@@ -1,6 +1,4 @@
-﻿using NAudio;
-using NAudio.Wave;
-using System.Diagnostics;
+﻿using NAudio.Wave;
 namespace NAudioExtend.Provider
 {
     /// <summary>
