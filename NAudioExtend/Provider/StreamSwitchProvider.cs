@@ -98,6 +98,9 @@ namespace NAudioExtend.Provider
                     _hasPlaybackEnded = true;
                     PlaybackEnded?.Invoke();
                 }
+
+                Array.Clear(outputBuffer, offset, count);
+                return count;
             }
             else
             {

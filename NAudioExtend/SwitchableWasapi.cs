@@ -194,35 +194,50 @@ namespace NAudioExtend
         /// <summary>
         /// Starts playback.
         /// </summary>
-        public void Play()
+        public bool Play()
         {
             lock (_lock)
             {
-                _wasapiOut?.Play();
+                if (_wasapiOut != null)
+                {
+                    _wasapiOut.Play();
+                    return true;
+                }
+                return false;
             }
         }
 
         /// <summary>
         /// Pauses playback.
         /// </summary>
-        public void Pause()
+        public bool Pause()
         {
             lock (_lock)
             {
-                _wasapiOut?.Pause();
+                if (_wasapiOut != null)
+                {
+                    _wasapiOut.Pause();
+                    return true;
+                }
+                return false;
             }
         }
 
         /// <summary>
         /// Stops playback and disposes the WasapiOut instance.
         /// </summary>
-        public void Stop()
+        public bool Stop()
         {
             lock (_lock)
             {
-                _wasapiOut?.Stop();
-                _wasapiOut?.Dispose();
-                _wasapiOut = null;
+                if (_wasapiOut != null)
+                {
+                    _wasapiOut.Stop();
+                    _wasapiOut.Dispose();
+                    _wasapiOut = null;
+                    return true;
+                }
+                return false;
             }
         }
 
