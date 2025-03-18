@@ -1,6 +1,8 @@
 ﻿using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 
 namespace NAudioExtend.AudioDevice
@@ -62,8 +64,10 @@ namespace NAudioExtend.AudioDevice
                 }
             }
         }
-        readonly HashSet<AudioSession> _sessions = [];
-        public IEnumerable<AudioSession> Sessions => _sessions;
+
+        readonly Dictionary<uint,AudioSession> _sessions = [];
+        public IEnumerable<AudioSession> Sessions => _sessions.Values;
+        public IEnumerable<uint> SessionIDs => _sessions.Keys;
         public void AudioSessionControlsReload(MMDevice? device)
         {
             _sessions.Clear();
@@ -78,12 +82,24 @@ namespace NAudioExtend.AudioDevice
             for (int i = 0; i < sessionCollection.Count; i++)
             {
                 AudioSession newAudioSession = new(sessionCollection[i]);
-                //If addition fails, Dispose
-                if (!_sessions.Add(newAudioSession))
-                    newAudioSession.Dispose();
+                uint id = newAudioSession.ProcessID;
+
+                if (!_sessions.ContainsKey(id))
+                {
+                    _sessions.Add(id, newAudioSession);
+                    newAudioSession.SessionDisconnected += (_) => _sessions.Remove(id);
+                }
                 else
-                    newAudioSession.SessionDisconnected += (_) => _sessions.Remove(newAudioSession);
+                    newAudioSession.Dispose();
             }
         }
+
+        public bool TryGetSessionForCurrentProcess([MaybeNullWhen(false)] out AudioSession session)
+        {
+            uint currentProcessID = (uint)Environment.ProcessId;
+            return TryGetSession(currentProcessID, out session);
+        }
+        public bool TryGetSession(uint sessionId, [MaybeNullWhen(false)] out AudioSession session) =>
+            _sessions.TryGetValue(sessionId, out session);
     }
 }
